@@ -26,33 +26,165 @@ const registrationSchema = new Schema({
         type: String,
         required: true
     },
-    aadhar: {
+    sector: {
         type: String,
         required: true
     },
-    pancard: {
+    bp: {
         type: String,
         required: true
     },
-    passbook: {
+    poa: {
         type: String,
         required: true
     },
-    voterid: {
+    ip: {
         type: String,
         required: true
     },
-    companylogo: {
+    fs: {
         type: String,
         required: true
     },
-    companydocumentation: {
+    cc: {
         type: String,
         required: true
     },
     sector: {
         type: String,
         required: true
+    },
+    coapr: {
+        type: String,
+        required: function () {
+            return this.sector === 'Ayurveda';
+        }
+    },
+    pfail: {
+        type: String,
+        required: function () {
+            return this.sector === 'Ayurveda';
+        }
+    },
+    ctr: {
+        type: String,
+        required: function () {
+            return this.sector === 'Ayurveda';
+        }
+    },
+    ml: {
+        type: String,
+        required: function () {
+            return (this.sector === 'Ayurveda' || this.sector === 'Homeopathy' || this.sector === 'Siddha');
+        }
+    },
+    gmpc: {
+        type: String,
+        required: function () {
+            return this.sector === 'Ayurveda';
+        }
+    },
+    ypc: {
+        type: String,
+        required: function () {
+            return this.sector === 'Yoga';
+        }
+    },
+    tatc: {
+        type: String,
+        required: function () {
+            return this.sector === 'Yoga';
+        }
+    },
+    sahc: {
+        type: String,
+        required: function () {
+            return this.sector === 'Yoga';
+        }
+    },
+    ycr: {
+        type: String,
+        required: function () {
+            return this.sector === 'Yoga';
+        }
+    },
+    ntp: {
+        type: String,
+        required: function () {
+            return this.sector === 'Naturopathy';
+        }
+    },
+    pl: {
+        type: String,
+        required: function () {
+            return this.sector === 'Naturopathy';
+        }
+    },
+    fc: {
+        type: String,
+        required: function () {
+            return this.sector === 'Naturopathy';
+        }
+    },
+    ce: {
+        type: String,
+        required: function () {
+            return (this.sector === 'Naturopathy' || this.sector === 'Unani');
+        }
+    },
+    upr: {
+        type: String,
+        required: function () {
+            return this.sector === 'Unani';
+        }
+    },
+    pc: {
+        type: String,
+        required: function () {
+            return this.sector === 'Unani';
+        }
+    },
+    maqcl: {
+        type: String,
+        required: function () {
+            return this.sector === 'Unani';
+        }
+    },
+    spr: {
+        type: String,
+        required: function () {
+            return this.sector === 'Siddha';
+        }
+    },
+    fd: {
+        type: String,
+        required: function () {
+            return this.sector === 'Siddha';
+        }
+    },
+    ctd: {
+        type: String,
+        required: function () {
+            return this.sector === 'Siddha';
+        }
+    },
+    hpr: {
+        type: String,
+        required: function () {
+            return this.sector === 'Homeopathy';
+        }
+    },
+    pf: {
+        type: String,
+        required: function () {
+            return this.sector === 'Homeopathy';
+        }
+    },
+    cs: {
+        type: String,
+        required: function () {
+            return this.sector === 'Homeopathy';
+        }
     },
     userId: {
         type: Schema.Types.ObjectId, 

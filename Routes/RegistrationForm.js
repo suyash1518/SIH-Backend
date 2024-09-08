@@ -4,12 +4,13 @@ const router = express.Router();
 const RegistrationForm = require('../models/RegistrationForm.js');
 const { body, validationResult } = require('express-validator');
 const User = require('../middleware/userInfo.js');
-
+const mongoose = require('mongoose');
 
 // const shhh = process.env.JWT_SECRET;
 
 // Route 1 : Adding RegistrationForm
 // Base link address = http://localhost:5000/user/RegistrationForm
+
 
 router.post('/addRegistrationForm', User, [
     body('companyname', 'Enter a valid company name').notEmpty(),
@@ -18,19 +19,40 @@ router.post('/addRegistrationForm', User, [
     body('phoneno', 'Enter a valid phone number').isLength({ min: 10, max: 10 }),
     body('addressd', 'Enter a valid address').notEmpty(),
     body('addressc', 'Enter a valid address for customer').notEmpty(),
-    body('aadhar', 'Enter a valid aadhar number').notEmpty(),
-    body('pancard', 'Enter a valid pan number').notEmpty(),
-    body('voterid', 'Enter a valid voter ID').notEmpty(),
-    body('passbook', 'Enter a valid passbook').notEmpty(),
-    body('companylogo', 'Enter a valid company logo').notEmpty(),
-    body('companydocumentation', 'Enter valid company documentation').notEmpty(),
-    body('sector', 'Enter a valid sector').notEmpty()
+    body('bp', 'Enter a valid business plan').notEmpty(),
+    body('poa', 'Enter a valid proof of assets').notEmpty(),
+    body('ip', 'Enter a valid investment plan').notEmpty(),
+    body('fs', 'Enter a valid financial statements').notEmpty(),
+    body('cc', 'Enter a valid cash flow').notEmpty(),
+    body('sector', 'Enter a valid sector').notEmpty(),
+    body('coapr', 'Enter a valid cost of assets ratio'),
+    body('pfail', 'Enter a valid profitability failure ratio'),
+    body('ctr', 'Enter a valid current ratio'),
+    body('ml', 'Enter a valid market leverage'),
+    body('gmpc', 'Enter a valid gross margin percentage'),
+    body('ypc', 'Enter a valid yearly profitability'),
+    body('tatc', 'Enter a valid total asset turnover ratio'),
+    body('sahc', 'Enter a valid sales and administrative cost ratio'),
+    body('ycr', 'Enter a valid yield on capital ratio'),
+    body('ntp', 'Enter a valid net cash flow'),
+    body('pl', 'Enter a valid profit loss'),
+    body('fc', 'Enter a valid fixed charges'),
+    body('ce', 'Enter a valid current expenses'),
+    body('upr', 'Enter a valid unpaid reserves'),
+    body('pc', 'Enter a valid profit loss'),
+    body('maqlc', 'Enter a valid market value of assets'),
+    body('spr', 'Enter a valid sales per revenue'),
+    body('fd', 'Enter a valid fixed debt'),
+    body('ctd', 'Enter a valid current debt'),
+    body('hpr', 'Enter a valid holding profit ratio'),
+    body('pf', 'Enter a valid profit factor'),
+    body('cs', 'Enter a valid cash conversion cycle')
 ], async (req, res) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
         return res.status(400).json({ success: false, error: result.array() });
     }
-
+    
     try {
         const userId = req.user;
 
@@ -38,7 +60,7 @@ router.post('/addRegistrationForm', User, [
         if (finding) {
             return res.status(400).json({ success: false, error: "Email already exists" });
         }
-
+        
         let newRegistrationForm = new RegistrationForm({
             companyname: req.body.companyname,
             director: req.body.director,
@@ -46,13 +68,34 @@ router.post('/addRegistrationForm', User, [
             phoneno: req.body.phoneno,
             addressd: req.body.addressd,
             addressc: req.body.addressc,
-            aadhar: req.body.aadhar,
-            pancard: req.body.pancard,
-            voterid: req.body.voterid,
-            passbook: req.body.passbook,
-            companylogo: req.body.companylogo,
-            companydocumentation: req.body.companydocumentation,
+            bp: req.body.bp,
+            poa: req.body.poa,
+            ip: req.body.ip,
+            fs: req.body.fs,
+            cc: req.body.cc,
             sector: req.body.sector,
+            coapr: req.body.coapr,
+            pfail: req.body.pfail,
+            ctr: req.body.ctr,
+            ml: req.body.ml,
+            gmpc: req.body.gmpc,
+            ypc: req.body.ypc,
+            tatc: req.body.tatc,
+            sahc: req.body.sahc,
+            ycr: req.body.ycr,
+            ntp: req.body.ntp,
+            pl: req.body.pl,
+            fc: req.body.fc,
+            ce: req.body.ce,
+            upr: req.body.upr,
+            pc: req.body.pc,
+            maqlc: req.body.maqlc,
+            spr: req.body.spr,
+            fd: req.body.fd,
+            ctd: req.body.ctd,
+            hpr: req.body.hpr,
+            pf: req.body.pf,
+            cs: req.body.cs,
             userId: userId
         });
 
@@ -66,8 +109,8 @@ router.post('/addRegistrationForm', User, [
 
 
 
- // Route : 2 : Deleting the RegistrationForm
- router.delete('/deleteRegistrationForm/:id',async (req, res) => {
+// Route : 2 : Deleting the RegistrationForm
+router.delete('/deleteRegistrationForm/:id',async (req, res) => {
     try {
         let cloth = await RegistrationForm.findById(req.params.id);
         if (!cloth) {
@@ -86,21 +129,40 @@ router.post('/addRegistrationForm', User, [
 router.put(
     '/updateRegistrationForm/:id',
     [
-        body('comanyname').optional().isString(),
+        body('companyname').optional().isString(),
         body('director').optional().isString(),
         body('email').optional().isEmail(),
         body('phoneno').optional().isNumeric(),
         body('addressd').optional().isString(),
         body('addressc').optional().isString(),
-        body('aadhar').optional().isNumeric(),
-        body('pancard').optional().isNumeric(),
-        body('voterid').optional().isNumeric(),
-        body('passbook').optional().isNumeric(),
-        body('companylogo').optional().isString(),
-        body('companydocumentation').optional().isString(),
-        body('sector').optional().isString()
-
-
+        body('bp').optional().isString(),
+        body('poa').optional().isString(),
+        body('ip').optional().isString(),
+        body('fs').optional().isString(),
+        body('cc').optional().isString(),
+        body('sector').optional().isString(),
+        body('coapr').optional().isString(),
+        body('pfail').optional().isString(),
+        body('ctr').optional().isString(),
+        body('ml').optional().isString(),
+        body('gmpc').optional().isString(),
+        body('ypc').optional().isString(),
+        body('tatc').optional().isString(),
+        body('sahc').optional().isString(),
+        body('ycr').optional().isString(),
+        body('ntp').optional().isString(),
+        body('pl').optional().isString(),
+        body('fc').optional().isString(),
+        body('ce').optional().isString(),
+        body('upr').optional().isString(),
+        body('pc').optional().isString(),
+        body('maqlc').optional().isString(),
+        body('spr').optional().isString(),
+        body('fd').optional().isString(),
+        body('ctd').optional().isString(),
+        body('hpr').optional().isString(),
+        body('pf').optional().isString(),
+        body('cs').optional().isString()
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -109,7 +171,18 @@ router.put(
         }
 
         try {
-            const { companyname, director, email, phoneno,addressc, addressd, aadhar, pancard, voterid, passbook, companylogo,companydocumentation, sector } = req.body;
+            // Validate ObjectId format
+            if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+                return res.status(400).json({ error: 'Invalid registration form ID' });
+            }
+
+            // Destructure the request body
+            const {
+                companyname, director, email, phoneno, addressc, addressd, bp, poa, ip, fs, cc, sector, coapr, pfail, ctr, ml, gmpc, ypc,
+                tatc, sahc, ycr, ntp, pl, fc, ce, upr, pc, maqlc, spr, fd, ctd, hpr, pf, cs
+            } = req.body;
+
+            // Initialize the update object
             const updateRegistrationForm = {};
             if (companyname) updateRegistrationForm.companyname = companyname;
             if (director) updateRegistrationForm.director = director;
@@ -117,28 +190,49 @@ router.put(
             if (phoneno) updateRegistrationForm.phoneno = phoneno;
             if (addressc) updateRegistrationForm.addressc = addressc;
             if (addressd) updateRegistrationForm.addressd = addressd;
-            if (aadhar) updateRegistrationForm.aadhar = aadhar;
-            if (pancard) updateRegistrationForm.pancard = pancard;
-            if (voterid) updateRegistrationForm.voterid = voterid;
-            if (passbook) updateRegistrationForm.passbook = passbook;
-            if (companylogo) updateRegistrationForm.companylogo = companylogo;
-            if (companydocumentation) updateRegistrationForm.companydocumentation = companydocumentation;
+            if (bp) updateRegistrationForm.bp = bp;
+            if (poa) updateRegistrationForm.poa = poa;
+            if (ip) updateRegistrationForm.ip = ip;
+            if (fs) updateRegistrationForm.fs = fs;
+            if (cc) updateRegistrationForm.cc = cc;
             if (sector) updateRegistrationForm.sector = sector;
+            if (coapr) updateRegistrationForm.coapr = coapr;
+            if (pfail) updateRegistrationForm.pfail = pfail;
+            if (ctr) updateRegistrationForm.ctr = ctr;
+            if (ml) updateRegistrationForm.ml = ml;
+            if (gmpc) updateRegistrationForm.gmpc = gmpc;
+            if (ypc) updateRegistrationForm.ypc = ypc;
+            if (tatc) updateRegistrationForm.tatc = tatc;
+            if (sahc) updateRegistrationForm.sahc = sahc;
+            if (ycr) updateRegistrationForm.ycr = ycr;
+            if (ntp) updateRegistrationForm.ntp = ntp;
+            if (pl) updateRegistrationForm.pl = pl;
+            if (fc) updateRegistrationForm.fc = fc;
+            if (ce) updateRegistrationForm.ce = ce;
+            if (upr) updateRegistrationForm.upr = upr;
+            if (pc) updateRegistrationForm.pc = pc;
+            if (maqlc) updateRegistrationForm.maqlc = maqlc;
+            if (spr) updateRegistrationForm.spr = spr;
+            if (fd) updateRegistrationForm.fd = fd;
+            if (ctd) updateRegistrationForm.ctd = ctd;
+            if (hpr) updateRegistrationForm.hpr = hpr;
+            if (pf) updateRegistrationForm.pf = pf;
+            if (cs) updateRegistrationForm.cs = cs;
 
-           
-
+            // Find and update the registration form
             let form = await RegistrationForm.findById(req.params.id);
             if (!form) {
-                return res.status(404).json({ error: "Error found" });
+                return res.status(404).json({ error: "Registration form not found" });
             }
 
+            // Update the form and return the updated document
             form = await RegistrationForm.findByIdAndUpdate(req.params.id, { $set: updateRegistrationForm }, { new: true });
 
             res.status(200).json(form);
 
         } catch (error) {
             console.error(error.message);
-            res.status(500).json({ error: "Some Error Occurred" });
+            res.status(500).json({ error: "An internal server error occurred" });
         }
     }
 );
